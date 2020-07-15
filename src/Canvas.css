@@ -1,0 +1,92 @@
+.canvas-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.canvas-wrapper {
+  position: absolute;
+}
+
+.canvas-wrapper canvas {
+  border: 1px solid red;
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+  cursor: move;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.main-content {
+  font-family: segoe-ui_normal, Segoe UI, Segoe, Segoe WP, Helvetica Neue,
+    Helvetica, sans-serif;
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "leftside section aside"
+    "footer footer footer";
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
+  /* grid-gap: 5px; */
+  height: 100vh;
+  /* margin: 10px;   */
+}
+
+.top-bar {
+  grid-area: header;
+}
+
+.left-side {
+  grid-area: leftside;
+  overflow: hidden;
+}
+
+section {
+  background: #ababab;
+  grid-area: section;
+}
+
+aside {
+  grid-area: aside;
+}
+
+footer {
+  grid-area: footer;
+}
+
+/* header, nav, section, aside, footer {
+	padding: 5px;
+} */
+
+.left-side .top-area {
+  padding: 10px;
+}
+
+.upload-img-list-content {
+  /*margin-top: 10px;*/
+  /*width: 140px;*/
+  height: 100%;
+  overflow-y: auto;
+}
+.upload-img-list-content .img-item,
+.upload-img-list-content img {
+  display: block;
+  border: 1px solid #eaeaea;
+  margin: 10px;
+  /* height: 100px; */
+  width: 140px;
+}
+
+.overflow-hidden {
+  height: 100%;
+  overflow: hidden;
+}
