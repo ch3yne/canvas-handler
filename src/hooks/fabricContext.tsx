@@ -31,3 +31,23 @@ export const FabricContextProvider = (props: {
     </FabricContext.Provider>
   );
 };
+
+// use
+// import React, { useContext } from 'react';
+// import { FabricContext } from './somewhere';
+//
+// const MyComponent = () => {
+//   const [canvas, initCanvas] = useContext(FabricContext);
+//   useEffect(() => {
+//     const localCanvas = new fabric.Canvas('c');
+//     initCanvas(localCanvas);
+//   }, []);
+//
+//   return (
+//       <canvas
+//           id='c'
+//           width={TEMPLATE_WIDTH}
+//           height={TEMPLATE_HEIGHT}
+//       />
+//   );
+// }

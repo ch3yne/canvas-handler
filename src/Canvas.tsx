@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, createRef } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 
 import { fabric } from "fabric";
 
@@ -6,54 +6,55 @@ import {
   AppBar,
   Button,
   IconButton,
+  TextField,
   Toolbar,
   Typography,
-  TextField,
 } from "@material-ui/core";
 
 import { Apps, CloudUpload, Delete, Save } from "@material-ui/icons";
 
+import TopBar from "./components/topbar";
+
 import "./Canvas.css";
 
-import img1 from "./bili-title.png";
-
-// import { FabricContext } from './fabricContext';
+import img1 from "./images/bili-title.png";
 
 // import
 // https://github.com/fabricjs/fabric.js/issues/5951
-// import img2 from './test.jpg';
+// import img2 from './images/test.jpg';
 
-function debounce(fn, ms) {
-  let timer;
-  return (_) => {
+function debounce(fn: any, ms: any) {
+  let timer: any;
+  return (_: any) => {
     clearTimeout(timer);
     timer = setTimeout((_) => {
       timer = null;
+      // @ts-ignore
       fn.apply(this, arguments);
     }, ms);
   };
 }
 
 function Canvas() {
-  // const [ canvas, initCanvas ] = useContext(FabricContext);
-  const c = useRef(null);
-  const wrapper = useRef();
+  const c: React.MutableRefObject<null> = useRef(null);
+  const wrapper: any = useRef(null);
 
-  const inputFile = createRef();
-  const imgSet = useRef();
+  const inputFile: any = createRef();
+  const imgSet = useRef<HTMLDivElement>(null);
 
-  const [canvas, setCanvas] = useState(null);
+  const [canvas, setCanvas]: any = useState(null);
 
   // let inputFile = null;
   // let imgSet = null;
-  let movingImage;
-  let imgDragOffset = {
+  let movingImage: any;
+  let imgDragOffset: any = {
     offsetX: 0,
     offsetY: 0,
   };
 
   // 初始化 canvas
   useEffect(() => {
+    // @ts-ignore
     setCanvas(() => {
       const localCanvas = new fabric.Canvas("c");
       // const { offsetWidth, offsetHeight } = wrapper.current;
@@ -68,16 +69,16 @@ function Canvas() {
   }, []);
 
   // 调节窗口大小时防抖调节 canvas 大小
-  useEffect(() => {
+  useEffect((): any => {
     const debouncedHandleResize = debounce(function handleResize() {
-      const { offsetWidth, offsetHeight } = wrapper.current;
+      const { offsetWidth, offsetHeight }: any = wrapper.current;
       canvas.setDimensions({
         width: offsetWidth,
         height: offsetHeight,
       });
     }, 1000);
     window.addEventListener("resize", debouncedHandleResize);
-    return (_) => {
+    return (_: any): any => {
       window.removeEventListener("resize", debouncedHandleResize);
     };
   });
@@ -88,7 +89,7 @@ function Canvas() {
     }
 
     // canvas hover 状态
-    canvas.on("mouse:over", (e) => {
+    canvas.on("mouse:over", (e: any) => {
       // if (canvas.item(0)) {
       //   // canvas.item(0).hasControls = canvas.item(0).hasBorders = false;
       //   // canvas.item(0).set({
@@ -108,21 +109,21 @@ function Canvas() {
       }
     });
     //
-    canvas.on("mouse:out", (e) => {
+    canvas.on("mouse:out", (e: any) => {
       // if (e.target) {
       //   e.target.set('strokeWidth', 0);
       //   canvas.renderAll();
       // }
     });
 
-    canvas.on("mouse:down", (e) => {
+    canvas.on("mouse:down", (e: any) => {
       if (e.target) {
         e.target.opacity = 0.5;
         canvas.renderAll();
       }
     });
 
-    canvas.on("mouse:up", (e) => {
+    canvas.on("mouse:up", (e: any) => {
       if (e.target) {
         e.target.opacity = 1;
         canvas.renderAll();
@@ -130,26 +131,28 @@ function Canvas() {
     });
 
     // canvas 监听画布内鼠标移动事件
-    canvas.on("mouse:move", (e) => {
+    canvas.on("mouse:move", (e: any) => {
       // console.log(e);
     });
 
     // canvas 监听画布内拖动事件
-    canvas.on("drop", (e) => {
+    canvas.on("drop", (e: any) => {
       dropImg(e);
     });
   });
 
-  const handleTest = (e) => {
+  const handleTest = (e: any) => {
+    console.log(canvas);
     // console.log(canvas.getObjects());
-    console.log(canvas.item(0));
-    console.log(wrapper.current.offsetWidth);
-    console.log(wrapper.current.offsetHeight);
+    // console.log(canvas.item(0));
+    const { current } = wrapper;
+    console.log(current.offsetWidth);
+    console.log(current.offsetHeight);
     console.log(canvas.width);
   };
 
   // 拖动图片放进画布
-  const dropImg = (e) => {
+  const dropImg = (e: any) => {
     // console.log(movingImage);
     const { offsetX, offsetY } = e.e;
     const image = new fabric.Image(movingImage, {
@@ -170,7 +173,7 @@ function Canvas() {
   };
 
   // 上传图片
-  const uploadFile = (e) => {
+  const uploadFile = (e: any) => {
     // console.log(inputFile);
     e.persist();
     // if (inputFile.current) {
@@ -181,7 +184,7 @@ function Canvas() {
   };
 
   // 选中图片
-  const handleImg = (e) => {
+  const handleImg = (e: any) => {
     if (e.target.tagName.toLowerCase() === "img") {
       imgDragOffset.offsetX = e.clientX - e.target.offsetLeft;
       imgDragOffset.offsetY = e.clientY - e.target.offsetTop;
@@ -194,14 +197,14 @@ function Canvas() {
     }
   };
 
-  const handleFile = (e) => {
+  const handleFile = (e: any) => {
     e.persist();
-    const fileReader = new FileReader();
+    const fileReader: FileReader = new FileReader();
     fileReader.readAsDataURL(e.target.files[0]);
-    fileReader.onload = (e) => {
+    fileReader.onload = (e: any) => {
       // console.log(e)
       const dataURL = e.target.result;
-      const img = document.createElement("img");
+      const img: any = document.createElement("img");
       img.className = "img-item";
       img.draggable = true;
       if (typeof dataURL === "string") {
@@ -209,7 +212,9 @@ function Canvas() {
       }
       // img.src = dataURL;
       img.click = handleImg;
-      imgSet.current.appendChild(img);
+      if (imgSet.current) {
+        imgSet.current.appendChild(img);
+      }
     };
   };
 
@@ -240,42 +245,43 @@ function Canvas() {
   return (
     <div className={"main-content"}>
       <div className="top-bar">
-        <AppBar position="static">
-          <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Apps />
-            </IconButton>
-            <Typography variant="h6" color="inherit">
-              Canvas Demo
-            </Typography>
-            <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<Delete />}
-              onClick={removeShape}
-              className={"classes.menuButton"}
-            >
-              删除选中
-            </Button>
-            <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<Save />}
-              onClick={saveImage}
-              className={"classes.menuButton"}
-            >
-              保存图片
-            </Button>
-            <Button
-              variant="outlined"
-              color="inherit"
-              onClick={handleTest}
-              className={"classes.menuButton"}
-            >
-              TEST
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <TopBar />
+        {/*<AppBar position="static">*/}
+        {/*  <Toolbar variant="dense">*/}
+        {/*    <IconButton edge="start" color="inherit" aria-label="menu">*/}
+        {/*      <Apps />*/}
+        {/*    </IconButton>*/}
+        {/*    <Typography variant="h6" color="inherit">*/}
+        {/*      Canvas Demo*/}
+        {/*    </Typography>*/}
+        {/*    <Button*/}
+        {/*      variant="outlined"*/}
+        {/*      color="inherit"*/}
+        {/*      startIcon={<Delete />}*/}
+        {/*      onClick={removeShape}*/}
+        {/*      className={"classes.menuButton"}*/}
+        {/*    >*/}
+        {/*      删除选中*/}
+        {/*    </Button>*/}
+        {/*    <Button*/}
+        {/*      variant="outlined"*/}
+        {/*      color="inherit"*/}
+        {/*      startIcon={<Save />}*/}
+        {/*      onClick={saveImage}*/}
+        {/*      className={"classes.menuButton"}*/}
+        {/*    >*/}
+        {/*      保存图片*/}
+        {/*    </Button>*/}
+        {/*    <Button*/}
+        {/*      variant="outlined"*/}
+        {/*      color="inherit"*/}
+        {/*      onClick={handleTest}*/}
+        {/*      className={"classes.menuButton"}*/}
+        {/*    >*/}
+        {/*      TEST*/}
+        {/*    </Button>*/}
+        {/*  </Toolbar>*/}
+        {/*</AppBar>*/}
       </div>
       <div className="left-side">
         <div className="top-area">
@@ -285,7 +291,7 @@ function Canvas() {
             component="span"
             fullWidth
             startIcon={<CloudUpload />}
-            onClick={(e) => {
+            onClick={(e: any) => {
               uploadFile(e);
             }}
           >
