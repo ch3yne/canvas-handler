@@ -6,25 +6,25 @@ import React, { createRef, useContext, useEffect, useRef } from "react";
 import { Context } from "../store";
 
 export default function ImgSet() {
-  const [_, dispatch]: any = useContext(Context);
+  const [, dispatch]: any = useContext(Context);
 
   const inputFile: any = createRef();
   const imgSet = useRef<HTMLDivElement>(null);
 
   function handleDragStart(this: any, e: any) {
-    // console.log(e);
     if (imgSet.current !== null) {
       const images = imgSet.current.children;
       [].forEach.call(images, function (img: any) {
         img.classList.remove("img_dragging");
       });
       this.classList.add("img_dragging");
-      // TODO set offset
+      const leftSide: any = document.querySelector(".left-side");
+      const topBar: any = document.querySelector(".top-bar");
       dispatch({
         type: "SET_IMG_DRAG_OFFSET",
         payload: {
-          offsetX: e.clientX - e.target.offsetLeft,
-          offsetY: e.clientY - e.target.offsetTop,
+          offsetX: e.clientX - e.target.offsetLeft + leftSide.clientWidth,
+          offsetY: e.clientY - e.target.offsetTop + topBar.clientHeight,
         },
       });
     }
@@ -44,7 +44,6 @@ export default function ImgSet() {
     const fileReader: FileReader = new FileReader();
     fileReader.readAsDataURL(e.target.files[0]);
     fileReader.onload = (e: any) => {
-      // console.log(e)
       const dataURL = e.target.result;
       const img: any = document.createElement("img");
       img.className = "img-item";
@@ -52,7 +51,6 @@ export default function ImgSet() {
       if (typeof dataURL === "string") {
         img.src = dataURL;
       }
-      // img.click = handleImg;
       if (imgSet.current) {
         imgSet.current.appendChild(img);
       }
@@ -88,8 +86,6 @@ export default function ImgSet() {
   // @ts-ignore
   useEffect(() => {
     const images = document.querySelectorAll(".upload-img-list-content img");
-    // console.log(images);
-    // if (images)
     [].forEach.call(images, function (img: any) {
       img.addEventListener("dragstart", handleDragStart, false);
       img.addEventListener("dragend", handleDragEnd, false);
@@ -132,20 +128,11 @@ export default function ImgSet() {
             ".upload-img-list-content img"
           );
           console.log(images);
-          // if (imgSet.current !== null) {
-          //   console.log(imgSet.current.children[0].classList);
-          // }
         }}
       >
         123
       </div>
-      <div
-        className="upload-img-list-content"
-        ref={imgSet}
-        // onMouseDown={(e) => {
-        //   handleImg(e);
-        // }}
-      >
+      <div className="upload-img-list-content" ref={imgSet}>
         <img className="img-item" src={img1} alt="" draggable />
         {/* <img
               className="img-item"

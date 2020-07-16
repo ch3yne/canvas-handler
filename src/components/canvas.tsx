@@ -16,34 +16,31 @@ function debounce(fn: any, ms: any) {
 }
 
 export default function Canvas() {
-  const [state] = useContext(Context);
-
+  const [_]: any = useContext(Context);
   const c: any = useRef(null);
   const container: any = useRef(null);
   const wrapper: any = useRef(null);
 
   const [canvas, setCanvas]: any = useState(null);
 
-  const [_, dispatch]: any = useContext(Context);
-
-  // 拖动图片放进画布
-  const dropImg = (e: any) => {
-    const { offsetX, offsetY } = e.e;
-    if (state.movingImg !== null) {
-      const image = new fabric.Image(state.movingImg, {
-        width: state.movingImg.naturalWidth,
-        height: state.movingImg.naturalHeight,
-        scaleX: 100 / state.movingImg.naturalWidth,
-        scaleY: 100 / state.movingImg.naturalWidth,
-        top: offsetY - state.imgDragOffset.offsetY,
-        left: offsetX - state.imgDragOffset.offsetX,
-      });
-      // console.log(image);
-      canvas.add(image);
-      return false;
-      // canvas.renderAll();
-    }
-  };
+  // // 拖动图片放进画布
+  // const dropImg = (e: any) => {
+  //   const { offsetX, offsetY } = e.e;
+  //   if (state.movingImg !== null) {
+  //     const image = new fabric.Image(state.movingImg, {
+  //       width: state.movingImg.naturalWidth,
+  //       height: state.movingImg.naturalHeight,
+  //       scaleX: 100 / state.movingImg.naturalWidth,
+  //       scaleY: 100 / state.movingImg.naturalWidth,
+  //       top: offsetY - state.imgDragOffset.offsetY,
+  //       left: offsetX - state.imgDragOffset.offsetX,
+  //     });
+  //     // console.log(image);
+  //     canvas.add(image);
+  //     return false;
+  //     // canvas.renderAll();
+  //   }
+  // };
 
   function handleDragEnter(e: any) {
     if (wrapper.current) {
@@ -75,22 +72,13 @@ export default function Canvas() {
     const img: any = document.querySelector(
       ".upload-img-list-content img.img_dragging"
     );
-    // console.log('event: ', e);
-    console.log(e.clientX, e.clientY);
     if (c.current !== null) {
-      const { offsetTop, offsetLeft } = container.current;
-      console.log(offsetLeft, offsetTop);
-      // console.log(c);
-      // console.log(_);
-      // console.log(img);
-      // TODO set offset
+      const { offsetTop, offsetLeft } = c.current;
       const newImage = new fabric.Image(img, {
         width: img.width,
         height: img.height,
-        // left: e.clientX - (offsetLeft + _.imgDragOffset.offsetX)*2,
-        // top: e.clientY - (offsetTop + _.imgDragOffset.offsetY)*2,
-        left: e.clientX,
-        top: e.clientY,
+        left: e.clientX - (_.imgDragOffset.offsetX + offsetLeft),
+        top: e.clientY - (_.imgDragOffset.offsetY + offsetTop),
       });
       canvas.add(newImage);
       return false;
@@ -139,7 +127,7 @@ export default function Canvas() {
         // width: 400,
         // height: 300,
       });
-      // localCanvas.selection = false;
+      // canvas.selection = false;
       return canvas;
     });
   }, []);
@@ -211,10 +199,11 @@ export default function Canvas() {
       // console.log(e);
     });
 
-    // canvas 监听画布内拖动事件
-    canvas.on("drop", (e: any) => {
-      dropImg(e);
-    });
+    // // canvas 监听画布内拖动事件
+    // canvas.on("drop", (e: any) => {
+    //   // dropImg(e);
+    //   handleDrop(e);
+    // });
   });
 
   return (
