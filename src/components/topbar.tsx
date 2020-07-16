@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   fade,
   makeStyles,
@@ -20,6 +20,9 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Brightness7Icon from "@material-ui/icons/Brightness7";
+
+import { ToggleThemeContext } from "../hooks/toggleTheme";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -88,6 +91,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function TopBar() {
+  const [themeState, setThemeState] = useContext(ToggleThemeContext);
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [
@@ -116,7 +121,7 @@ export default function TopBar() {
   };
 
   const handleToggleTheme = () => {
-    console.log(1231);
+    themeState === "light" ? setThemeState("dark") : setThemeState("light");
   };
 
   const menuId = "primary-search-account-menu";
@@ -161,6 +166,12 @@ export default function TopBar() {
           </Badge>
         </IconButton>
         <p>Notifications</p>
+      </MenuItem>
+      <MenuItem onClick={handleToggleTheme}>
+        <IconButton aria-label="toggle theme" color="inherit">
+          {themeState === "light" ? <Brightness4Icon /> : <Brightness7Icon />}
+        </IconButton>
+        <p>Theme</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -221,7 +232,11 @@ export default function TopBar() {
               color="inherit"
               onClick={handleToggleTheme}
             >
-              <Brightness4Icon />
+              {themeState === "light" ? (
+                <Brightness4Icon />
+              ) : (
+                <Brightness7Icon />
+              )}
             </IconButton>
             <IconButton
               edge="end"

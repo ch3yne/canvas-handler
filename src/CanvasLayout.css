@@ -8,6 +8,11 @@
   position: absolute;
 }
 
+.canvas-tools {
+  position: absolute;
+  width: 100%;
+}
+
 .canvas-wrapper canvas {
   border: 1px solid red;
 }

@@ -32,10 +32,29 @@
 //   );
 // }
 
-import React from "react";
+import React, { useState } from "react";
 
-import Canvas from "./Canvas";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { lightTheme, darkTheme } from "./theme";
+
+import CanvasLayout from "./CanvasLayout";
+
+import { ToggleThemeContext } from "./hooks/toggleTheme";
+
+import Store from "./store";
 
 export default function App() {
-  return <Canvas />;
+  const [themeState, setThemeState] = useState("light");
+
+  return (
+    <ToggleThemeContext.Provider value={[themeState, setThemeState]}>
+      <ThemeProvider theme={themeState === "light" ? lightTheme : darkTheme}>
+        <CssBaseline />
+        <Store>
+          <CanvasLayout />
+        </Store>
+      </ThemeProvider>
+    </ToggleThemeContext.Provider>
+  );
 }

@@ -1,3 +1,4 @@
-import { useState } from "react";
+//
+import { createContext } from "react";
 
-const [themeState, setThemeState] = useState("light");
+export const ToggleThemeContext: any = createContext("light");
